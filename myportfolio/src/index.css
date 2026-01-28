@@ -1,6 +1,21 @@
 @import "tailwindcss";
 
 /* ============================================
+   GLOBAL RESETS
+   ============================================ */
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background-color: #050a08; /* Match the darkest gradient color */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  overscroll-behavior-y: none; /* Prevent elastic bounce revealing white */
+}
+
+/* ============================================
    DESIGN TOKENS - Color System
    ============================================ */
 @theme {

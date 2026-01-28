@@ -1,12 +1,14 @@
-import { lazy, Suspense, useState, useEffect } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import Hero from './components/Hero'
 import About from './components/About'
 import Navigation from './components/Navigation'
 import Introduction from './components/Introduction'
+import CustomCursor from './components/CustomCursor'
 import { PERSONAL_INFO } from './config/constants'
 import { AnimatePresence } from 'framer-motion';
 
 // Lazy load heavy components below the fold
+const Experience = lazy(() => import('./components/Experience'));
 const Approach = lazy(() => import('./components/Approach'));
 const Projects = lazy(() => import('./components/Projects'));
 const CaseStudy = lazy(() => import('./components/CaseStudy'));
@@ -22,7 +24,8 @@ function App() {
   const [showIntro, setShowIntro] = useState(true);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a0f0d] via-[#0d1511] to-[#050a08]">
+    <div className="min-h-screen bg-gradient-to-b from-[#0a0f0d] via-[#0d1511] to-[#050a08] cursor-none">
+      <CustomCursor />
       <AnimatePresence mode='wait'>
         {showIntro && <Introduction onComplete={() => setShowIntro(false)} />}
       </AnimatePresence>
@@ -41,6 +44,10 @@ function App() {
         </section>
         
         <Suspense fallback={<LoadingFallback />}>
+          <section id="experience">
+            <Experience />
+          </section>
+
           <section id="approach">
             <Approach />
           </section>

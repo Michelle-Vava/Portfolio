@@ -39,11 +39,72 @@ export const PERSONAL_INFO = {
 export const NAV_SECTIONS = [
   { id: 'hero', label: 'Home' },
   { id: 'about', label: 'About' },
+  { id: 'experience', label: 'Experience' },
   { id: 'approach', label: 'Approach' },
   { id: 'projects', label: 'Projects' },
   { id: 'case-study', label: 'Case Study' },
   { id: 'contact', label: 'Contact' },
 ] as const;
+
+export const EXPERIENCE = [
+  {
+    company: "AXIS Capital Canada",
+    role: "Software Developer",
+    location: "Halifax, NS",
+    period: "June 2023 – Present",
+    description: "Modernizing legacy pricing and underwriting workflows into reliable, governed software systems used across multiple lines of business.",
+    responsibilities: [
+      "Refactored advanced Excel pricing logic into C#/.NET services, preserving nuanced business rules while improving correctness and maintainability.",
+      "Led the transformation of complex Excel pricing workbooks into scalable web applications used by underwriting teams across the organization.",
+      "Helped design and implement a centralized pricing platform replacing 80+ legacy Excel workbooks.",
+      "Contributed to pricing governance and control initiatives, improving version consistency, accuracy, and compliance.",
+      "Deployed and optimized applications in Microsoft Azure to support data-intensive workloads with reliability and scalability."
+    ],
+    tech: ["C# / .NET", "React", "Azure", "SQL"]
+  },
+  {
+    company: "AXIS Capital Canada",
+    role: "Software Developer Intern",
+    location: "Halifax, NS",
+    period: "Jan 2021 – May 2023",
+    description: "Worked across frontend, backend, and data workflows while supporting actuarial and legal teams.",
+    responsibilities: [
+      "Built a claims analysis web application for Ogden Tables, initially implemented in ASP.NET MVC and later refactored to a React frontend.",
+      "Improved usability and engagement by approximately 30% after the frontend refactor.",
+      "Migrated claims workflows from Excel spreadsheets into centralized applications.",
+      "Implemented data visualization and analytical features to support legal and actuarial decision-making."
+    ],
+    tech: ["ASP.NET MVC", "React", "C#", "SQL"]
+  },
+  {
+    company: "AXIS Capital Canada",
+    role: "Data Analyst",
+    location: "Halifax, NS",
+    period: "Sept 2020 – Dec 2020",
+    description: "Supported daily production reporting and data validation.",
+    responsibilities: [
+      "Built and maintained data mapping and reporting systems.",
+      "Validated reports for accuracy and consistency before delivery.",
+      "Supported business partners with reliable, timely data for decision-making."
+    ],
+    tech: ["Excel", "SQL", "Data Reporting"]
+  }
+];
+
+export const EDUCATION = [
+  {
+    institution: "St. Francis Xavier University",
+    degree: "Bachelor of Science in Computer Science (Co-op)",
+    period: "2018 – 2023",
+    location: "Antigonish, NS"
+  }
+];
+
+export const ACTIVITIES = [
+  "March Madness Pitch Competition — Top 64 Contender (Saint Mary’s University, 2021)",
+  "Varsity Track & Field Athlete — St. Francis Xavier University (2018–2021)",
+  "Circular Economy Student Challenge — TECHNATION (2021)"
+];
 
 export const ABOUT_CONTENT = {
   title: 'About Me',

@@ -29,7 +29,7 @@ const Navigation = () => {
     }
   }, [isOpen]);
 
-  const navLinks = ['About', 'Approach', 'Projects', 'Contact'];
+  const navLinks = ['About', 'Experience', 'Approach', 'Projects', 'Contact'];
 
   return (
     <motion.nav 
