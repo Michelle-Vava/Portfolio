@@ -25,7 +25,33 @@
     <meta property="twitter:image" content="https://michelle-vava.portfolio/og-image.jpg" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Critical Render Path: Show this while React loads -->
+      <style>
+        body { background-color: #050a08; margin: 0; }
+        .initial-loader {
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+        .logo-pulse {
+          font-family: Arial, sans-serif;
+          font-weight: bold;
+          font-size: 4rem;
+          color: #14b8a6; /* primary-500 */
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(0.95); }
+        }
+      </style>
+      <div class="initial-loader">
+        <div class="logo-pulse">MV.</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

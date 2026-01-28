@@ -1,8 +1,10 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import Hero from './components/Hero'
 import About from './components/About'
 import Navigation from './components/Navigation'
+import Introduction from './components/Introduction'
 import { PERSONAL_INFO } from './config/constants'
+import { AnimatePresence } from 'framer-motion';
 
 // Lazy load heavy components below the fold
 const Approach = lazy(() => import('./components/Approach'));
@@ -17,9 +19,17 @@ const LoadingFallback = () => (
 );
 
 function App() {
+  const [showIntro, setShowIntro] = useState(true);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0f0d] via-[#0d1511] to-[#050a08]">
-      <Navigation />
+      <AnimatePresence mode='wait'>
+        {showIntro && <Introduction onComplete={() => setShowIntro(false)} />}
+      </AnimatePresence>
+      
+      {!showIntro && (
+        <Navigation />
+      )}
       
       <main>
         <section id="hero">
