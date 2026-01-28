@@ -11,7 +11,6 @@ import { AnimatePresence } from 'framer-motion';
 const Experience = lazy(() => import('./components/Experience'));
 const Approach = lazy(() => import('./components/Approach'));
 const Projects = lazy(() => import('./components/Projects'));
-const CaseStudy = lazy(() => import('./components/CaseStudy'));
 const Contact = lazy(() => import('./components/Contact'));
 
 const LoadingFallback = () => (
@@ -21,13 +20,21 @@ const LoadingFallback = () => (
 );
 
 function App() {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => {
+    // Only show intro once per session
+    return !sessionStorage.getItem('hasSeenIntro');
+  });
+
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    sessionStorage.setItem('hasSeenIntro', 'true');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0f0d] via-[#0d1511] to-[#050a08] cursor-none">
       <CustomCursor />
       <AnimatePresence mode='wait'>
-        {showIntro && <Introduction onComplete={() => setShowIntro(false)} />}
+        {showIntro && <Introduction onComplete={handleIntroComplete} />}
       </AnimatePresence>
       
       {!showIntro && (
@@ -54,10 +61,6 @@ function App() {
           
           <section id="projects">
             <Projects />
-          </section>
-          
-          <section id="case-study">
-            <CaseStudy />
           </section>
           
           <section id="contact">

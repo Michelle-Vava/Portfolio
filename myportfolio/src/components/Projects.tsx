@@ -1,15 +1,34 @@
-import { PROJECTS } from '../config/constants';
+import { PROJECTS, CASE_STUDIES } from '../config/constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, ArrowRight, X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { useState, useCallback, useEffect } from 'react';
+import CaseStudyModal from './CaseStudyModal';
+
+// Define the Project interface based on content in constants.ts
+interface Project {
+  id: string;
+  title: string;
+  subtitle: string;
+  images: string[];
+  links: {
+    live?: string;
+    github?: string;
+    pdf?: string;
+  };
+  overview: string;
+  problem: string;
+  outcome: string;
+  tech: string[];
+}
 
 const Projects = () => {
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedCaseStudy, setSelectedCaseStudy] = useState<typeof CASE_STUDIES[0] | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Lock body scroll when modal is open
   useEffect(() => {
-    if (selectedProject) {
+    if (selectedProject || selectedCaseStudy) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -17,12 +36,19 @@ const Projects = () => {
     return () => {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedProject]);
+  }, [selectedProject, selectedCaseStudy]);
 
-  const openGallery = (project: any) => {
+  const openGallery = (project: Project) => {
     if (project.images?.length > 0) {
       setSelectedProject(project);
       setCurrentImageIndex(0);
+    }
+  };
+
+  const openCaseStudy = (title: string) => {
+    const study = CASE_STUDIES.find(s => s.title === title);
+    if (study) {
+      setSelectedCaseStudy(study);
     }
   };
 
@@ -130,17 +156,13 @@ const Projects = () => {
                          Visit Site <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                       </a>
                     )}
-                    {/* @ts-ignore */}
                     {project.links.pdf && (
-                      <a 
-                        // @ts-ignore
-                        href={project.links.pdf} 
-                        target='_blank' 
-                        rel='noreferrer noopener' 
-                        className='flex items-center gap-2 text-white font-bold text-sm tracking-wide hover:text-primary-400 transition-colors group/link'
+                      <button 
+                        onClick={() => openCaseStudy(project.title)}
+                        className='flex items-center gap-2 text-white font-bold text-sm tracking-wide hover:text-primary-400 transition-colors group/link cursor-pointer'
                       >
                          View Case Study <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                      </a>
+                      </button>
                     )}
                     {project.links.github && (
                       <a 
@@ -159,13 +181,11 @@ const Projects = () => {
                 <div className='lg:col-span-7 mt-8 lg:mt-0'>
                   <motion.div 
                     className={`aspect-video bg-gray-900 rounded-xl overflow-hidden border border-white/10 relative ${
-                      // @ts-ignore
                       project.images?.length > 0 ? 'cursor-none group/cursor' : ''
                     }`}
                     initial="initial"
                     whileHover="hover"
                     animate="initial"
-                    // @ts-ignore
                     onClick={() => openGallery(project)}
                   >
                     {/* Background styling */}
@@ -173,7 +193,6 @@ const Projects = () => {
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent)]" />
                     
                     {/* Custom Cursor Follower Hint */}
-                    {/* @ts-ignore */}
                     {project.images?.length > 0 && (
                       <div className="pointer-events-none absolute inset-0 z-50 opacity-0 group-hover/cursor:opacity-100 transition-opacity flex items-center justify-center">
                           <div className="bg-primary-500/90 text-black font-bold px-4 py-2 rounded-full backdrop-blur-md flex items-center gap-2 transform translate-y-4 group-hover/cursor:translate-y-0 transition-transform">
@@ -182,10 +201,8 @@ const Projects = () => {
                       </div>
                     )}
 
-                    {/* @ts-ignore */}
                     {project.images?.length > 0 ? (
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        {/* @ts-ignore */}
                         {project.images.slice(0, 3).map((img, i) => {
                           const total = Math.min(project.images.length, 3);
                           const offset = i - (total - 1) / 2;
@@ -305,7 +322,7 @@ const Projects = () => {
               {/* Progress/Counter */}
               <div className="absolute -bottom-10 left-0 right-0 text-center">
                  <div className="flex justify-center gap-2">
-                   {selectedProject.images.map((_: any, idx: number) => (
+                   {selectedProject.images.map((_: string, idx: number) => (
                      <button
                        key={idx}
                        onClick={() => setCurrentImageIndex(idx)}
@@ -323,9 +340,16 @@ const Projects = () => {
             </div>
           </motion.div>
         )}
+
+        {selectedCaseStudy && (
+          <CaseStudyModal 
+            study={selectedCaseStudy} 
+            onClose={() => setSelectedCaseStudy(null)} 
+          />
+        )}
       </AnimatePresence>
     </section>
   )
 }
 
-export default Projects
+export default Projects;
