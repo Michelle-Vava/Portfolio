@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* ============================================
+   DESIGN TOKENS - Color System
+   ============================================ */
+@theme {
+  /* Primary: Mint Green */
+  --color-primary-50: #f0fdf9;
+  --color-primary-100: #ccfbef;
+  --color-primary-200: #99f6e0;
+  --color-primary-300: #5fe9d0;
+  --color-primary-400: #2dd4bf;
+  --color-primary-500: #14b8a6;
+  --color-primary-600: #0d9488;
+  --color-primary-700: #0f766e;
+  --color-primary-800: #115e59;
+  --color-primary-900: #134e4a;
+  
+  /* Neutral: Dark with green undertones */
+  --color-dark-50: #f8faf9;
+  --color-dark-100: #f1f5f3;
+  --color-dark-200: #e2ebe6;
+  --color-dark-300: #cbd9d1;
+  --color-dark-400: #94aba0;
+  --color-dark-500: #64857a;
+  --color-dark-600: #476860;
+  --color-dark-700: #2d4942;
+  --color-dark-800: #1a2e28;
+  --color-dark-900: #0d1b17;
+  --color-dark-950: #050a08;
+}
+
+/* ============================================
+   CUSTOM UTILITIES
+   ============================================ */
+@utility text-gradient {
+  background: linear-gradient(to right, var(--color-primary-400), var(--color-primary-600));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
