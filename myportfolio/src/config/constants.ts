@@ -14,6 +14,18 @@ import shareEats1 from '../assets/share_eats_1.png';
 import shareEats2 from '../assets/share_eat_2.png';
 import shareEats3 from '../assets/share_eat_3.png';
 
+import eatsByMichelle1 from '../assets/eat_michelle_1.png';
+import eatsByMichelle2 from '../assets/eat_michelle_2.png';
+import eatsByMichelle3 from '../assets/eat_michelle_3.png';
+
+import serviceConnect1 from '../assets/service_connect.png';
+import serviceConnect2 from '../assets/service_connect_2.png';
+import serviceConnect4 from '../assets/service_connect_4.png';
+import serviceConnect5 from '../assets/service_connect_5.png';
+import serviceConnect6 from '../assets/service_connect_6.png';
+
+import profilePic from '../assets/me.jfif';
+
 export const PERSONAL_INFO = {
   name: 'Michelle Vava',
   title: 'Software Engineer',
@@ -35,6 +47,7 @@ export const NAV_SECTIONS = [
 
 export const ABOUT_CONTENT = {
   title: 'About Me',
+  image: profilePic,
   paragraphs: [
     "I’m a full-stack software engineer specializing in modernizing complex, business-critical workflows into reliable web and mobile systems. Much of my work sits at the intersection of legacy tooling, nuanced business logic, and user-facing applications that need to be both correct and usable.",
     "I have extensive experience replacing Excel-driven processes with scalable software, particularly in pricing, underwriting, and operational systems where errors carry real financial and regulatory risk. I care deeply about correctness, system boundaries, and long-term maintainability — not just shipping features.",
@@ -61,6 +74,7 @@ export const PROJECTS = [
     id: 'eats-by-michelle',
     title: 'Eats by Michelle',
     subtitle: 'Production Web Application — Product, UX, Frontend, Deployment',
+    images: [eatsByMichelle1, eatsByMichelle2, eatsByMichelle3],
     links: {
       live: 'https://www.eatsbymichelle.com',
       github: 'https://github.com/Michelle-Vava/eatsbymichelle'
@@ -74,6 +88,7 @@ export const PROJECTS = [
     id: 'shanda-platform',
     title: 'ServiceConnect (Shanda Platform)',
     subtitle: 'Enterprise-Grade Full-Stack System',
+    images: [serviceConnect1, serviceConnect2, serviceConnect4, serviceConnect5, serviceConnect6],
     links: {
       github: 'https://github.com/Michelle-Vava/testing'
     },
@@ -101,6 +116,8 @@ export const PROJECTS = [
     subtitle: 'Mobile Car-Sharing Platform (Working Beta)',
     images: [rideSplit1, rideSplit2, rideSplit3, rideSplit4],
     links: {
+      live: 'https://expo.dev/preview/update?message=beta+version+with+few+bugs&updateRuntimeVersion=1.0.0&createdAt=2025-10-18T10%3A32%3A48.860Z&slug=exp&projectId=0dc68925-8d91-4285-8564-5c6901d04c62&group=ae0d6730-82be-48e5-b842-f14adf34c17e',
+      pdf: '/RideSplit.pdf',
       github: 'https://github.com/Michelle-Vava/rideapp'
     },
     overview: 'RideSplit is a mobile application designed to organize informal car-sharing between students and local commuters. It turns a common real-world behavior — people coordinating rides through group chats and DMs — into a structured, role-based system with clear flows, state, and accountability.',
@@ -114,6 +131,7 @@ export const PROJECTS = [
     subtitle: 'Mobile Social Sports Platform (Working Prototype)',
     images: [demoApp1, demoApp2],
     links: {
+      live: 'https://expo.dev/preview/update?message=updates+to+the+mini+link+mvp&updateRuntimeVersion=1.0.0&createdAt=2025-10-11T05%3A27%3A37.641Z&slug=exp&projectId=ae0d4a9e-b769-480e-9ff5-3fcc81498286&group=7bb58c48-c069-4137-a30f-40efad5bd742',
       github: 'https://github.com/Michelle-Vava/demo-app'
     },
     overview: 'The Link is a mobile application designed to help people discover, create, and join local pickup sports games. It focuses on lowering the friction between wanting to play and actually playing by making games visible, accessible, and easy to join.',

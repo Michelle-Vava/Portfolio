@@ -1,8 +1,64 @@
 import { PROJECTS } from '../config/constants';
-import { motion } from 'framer-motion';
-import { Github, ExternalLink, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Github, ExternalLink, ArrowRight, X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+import { useState, useCallback, useEffect } from 'react';
 
 const Projects = () => {
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    }
+  }, [selectedProject]);
+
+  const openGallery = (project: any) => {
+    if (project.images?.length > 0) {
+      setSelectedProject(project);
+      setCurrentImageIndex(0);
+    }
+  };
+
+  const closeGallery = () => {
+    setSelectedProject(null);
+  };
+
+  const nextImage = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (!selectedProject) return;
+    setCurrentImageIndex((prev) => 
+      prev === selectedProject.images.length - 1 ? 0 : prev + 1
+    );
+  }, [selectedProject]);
+
+  const prevImage = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (!selectedProject) return;
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? selectedProject.images.length - 1 : prev - 1
+    );
+  }, [selectedProject]);
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedProject) return;
+      if (e.key === 'Escape') closeGallery();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProject, nextImage, prevImage]);
+
   return (
     <section className='py-32 relative bg-black/20'>
       <div className='container mx-auto px-6'>
@@ -71,7 +127,19 @@ const Projects = () => {
                         rel='noreferrer noopener' 
                         className='flex items-center gap-2 text-white font-bold text-sm tracking-wide hover:text-primary-400 transition-colors group/link'
                       >
-                        Visit Site <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                         Visit Site <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                      </a>
+                    )}
+                    {/* @ts-ignore */}
+                    {project.links.pdf && (
+                      <a 
+                        // @ts-ignore
+                        href={project.links.pdf} 
+                        target='_blank' 
+                        rel='noreferrer noopener' 
+                        className='flex items-center gap-2 text-white font-bold text-sm tracking-wide hover:text-primary-400 transition-colors group/link'
+                      >
+                         View Case Study <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                       </a>
                     )}
                     {project.links.github && (
@@ -89,35 +157,173 @@ const Projects = () => {
 
                 {/* Project Visual/Preview - Right Side */}
                 <div className='lg:col-span-7 mt-8 lg:mt-0'>
-                  <div className='aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg overflow-hidden border border-white/10 relative group-hover:border-primary-500/30 transition-colors'>
-                    {/* Project images or placeholder */}
-                    {/* @ts-ignore - images property exists on some projects */}
-                    {project.images?.length > 0 ? (
-                      <div className="absolute inset-0 flex items-center justify-center p-6 gap-4 bg-gray-900/50 backdrop-blur-sm">
-                        {/* @ts-ignore - images property is array of strings */}
-                        {project.images.slice(0, 3).map((img, i) => (
-                          <div key={i} className="h-full relative shadow-2xl transition-transform duration-500 group-hover:-translate-y-2" style={{ transitionDelay: `${i * 100}ms` }}>
-                             <img 
-                               src={img} 
-                               alt={`${project.title} screen ${i+1}`} 
-                               className="h-full w-auto object-contain rounded-xl border border-white/10" 
-                             />
+                  <motion.div 
+                    className={`aspect-video bg-gray-900 rounded-xl overflow-hidden border border-white/10 relative ${
+                      // @ts-ignore
+                      project.images?.length > 0 ? 'cursor-none group/cursor' : ''
+                    }`}
+                    initial="initial"
+                    whileHover="hover"
+                    animate="initial"
+                    // @ts-ignore
+                    onClick={() => openGallery(project)}
+                  >
+                    {/* Background styling */}
+                    <div className="absolute inset-0 bg-linear-to-br from-gray-800 to-black opacity-50" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05),transparent)]" />
+                    
+                    {/* Custom Cursor Follower Hint */}
+                    {/* @ts-ignore */}
+                    {project.images?.length > 0 && (
+                      <div className="pointer-events-none absolute inset-0 z-50 opacity-0 group-hover/cursor:opacity-100 transition-opacity flex items-center justify-center">
+                          <div className="bg-primary-500/90 text-black font-bold px-4 py-2 rounded-full backdrop-blur-md flex items-center gap-2 transform translate-y-4 group-hover/cursor:translate-y-0 transition-transform">
+                             <Maximize2 size={16} /> View Gallery
                           </div>
-                        ))}
+                      </div>
+                    )}
+
+                    {/* @ts-ignore */}
+                    {project.images?.length > 0 ? (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        {/* @ts-ignore */}
+                        {project.images.slice(0, 3).map((img, i) => {
+                          const total = Math.min(project.images.length, 3);
+                          const offset = i - (total - 1) / 2;
+                          
+                          return (
+                            <motion.img
+                              key={i}
+                              src={img}
+                              alt={`${project.title} preview ${i+1}`}
+                              className="absolute h-[55%] lg:h-[65%] w-auto object-contain rounded-lg shadow-2xl border border-white/5 bg-gray-900"
+                              variants={{
+                                initial: { 
+                                  x: `${offset * 15}%`, 
+                                  y: 0,
+                                  rotate: offset * -5,
+                                  scale: 0.9,
+                                  zIndex: total - Math.abs(offset),
+                                  filter: 'brightness(0.8) blur(0.5px)'
+                                },
+                                hover: { 
+                                  x: `${offset * 40}%`, 
+                                  y: -10,
+                                  rotate: 0,
+                                  scale: 1,
+                                  zIndex: 10 + i,
+                                  filter: 'brightness(1) blur(0px)',
+                                  transition: { 
+                                    type: 'spring', 
+                                    stiffness: 150, 
+                                    damping: 20 
+                                  }
+                                }
+                              }}
+                              animate={{ 
+                                y: [0, -5, 0],
+                                transition: { 
+                                  duration: 3 + i, 
+                                  repeat: Infinity, 
+                                  ease: "easeInOut",
+                                  delay: i * 0.5
+                                }
+                              }}
+                            />
+                          )
+                        })}
                       </div>
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center text-gray-700 font-mono text-sm">
                          [Project Screenshot: {project.title}]
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      {/* Fullscreen Gallery Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-100 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4"
+            onClick={closeGallery}
+          >
+            {/* Close Button */}
+            <button 
+              className="absolute top-6 right-6 text-gray-400 hover:text-white p-2 z-50 rounded-full hover:bg-white/10 transition-colors"
+              onClick={closeGallery}
+              aria-label="Close gallery"
+            >
+              <X size={32} />
+            </button>
+
+            {/* Navigation Buttons */}
+            {selectedProject.images.length > 1 && (
+              <>
+                <button 
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white p-3 rounded-full hover:bg-white/10 transition-colors z-50 hidden md:block"
+                  onClick={prevImage}
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={40} />
+                </button>
+                <button 
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white p-3 rounded-full hover:bg-white/10 transition-colors z-50 hidden md:block"
+                  onClick={nextImage}
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={40} />
+                </button>
+              </>
+            )}
+
+            {/* Main Image Container */}
+            <div 
+              className="relative w-full max-w-6xl h-[85vh] flex items-center justify-center" 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AnimatePresence mode='wait'>
+                <motion.img
+                  key={currentImageIndex}
+                  src={selectedProject.images[currentImageIndex]}
+                  alt={`Screenshot ${currentImageIndex + 1}`}
+                  className="max-h-full max-w-full object-contain rounded-lg shadow-2xl"
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 1.05 }}
+                  transition={{ duration: 0.2 }}
+                />
+              </AnimatePresence>
+
+              {/* Progress/Counter */}
+              <div className="absolute -bottom-10 left-0 right-0 text-center">
+                 <div className="flex justify-center gap-2">
+                   {selectedProject.images.map((_: any, idx: number) => (
+                     <button
+                       key={idx}
+                       onClick={() => setCurrentImageIndex(idx)}
+                       className={`w-2 h-2 rounded-full transition-colors ${
+                         idx === currentImageIndex ? 'bg-primary-500' : 'bg-gray-700 hover:bg-gray-500'
+                       }`}
+                       aria-label={`Go to slide ${idx + 1}`}
+                     />
+                   ))}
+                 </div>
+                 <p className="text-gray-500 text-sm mt-2">
+                   {currentImageIndex + 1} / {selectedProject.images.length}
+                 </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
