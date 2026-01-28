@@ -1,13 +1,47 @@
 import { PERSONAL_INFO } from '../config/constants';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
+import { useEffect } from 'react';
 
 const Hero = () => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth out the mouse movement
+  const springConfig = { damping: 25, stiffness: 150 };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
+
+  // Create parallax effects for different layers
+  const x1 = useTransform(springX, [0, 1], [-50, 50]);
+  const y1 = useTransform(springY, [0, 1], [-50, 50]);
+  
+  const x2 = useTransform(springX, [0, 1], [30, -30]);
+  const y2 = useTransform(springY, [0, 1], [30, -30]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Normalize values between 0 and 1
+      const { innerWidth, innerHeight } = window;
+      mouseX.set(e.clientX / innerWidth);
+      mouseY.set(e.clientY / innerHeight);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <div className='min-h-screen flex items-center justify-center relative overflow-hidden'>
-      {/* Background Gradient Orb */}
-      <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
+      {/* Background Gradient Orbs with Parallax */}
+      <motion.div 
+        style={{ x: x1, y: y1 }}
+        className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary-500/10 rounded-full blur-[120px] pointer-events-none" 
+      />
+      <motion.div 
+        style={{ x: x2, y: y2 }}
+        className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" 
+      />
 
       <div className='container mx-auto px-6 relative z-10'>
         <motion.div 

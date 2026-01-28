@@ -1,8 +1,14 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +27,12 @@ const Navigation = () => {
         scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'
       }`}
     >
+      {/* Scroll Progress Bar */}
+      <motion.div 
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary-500 origin-left"
+        style={{ scaleX }}
+      />
+
       <div className="container mx-auto px-6 flex justify-between items-center">
         <div className="text-2xl font-bold text-white tracking-tighter cursor-pointer hover:text-primary-400 transition-colors">
           MV<span className="text-primary-500">.</span>

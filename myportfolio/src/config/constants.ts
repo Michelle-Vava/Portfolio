@@ -85,16 +85,16 @@ export const PROJECTS = [
     tech: ['Next.js', 'TypeScript', 'Vercel']
   },
   {
-    id: 'shanda-platform',
-    title: 'ServiceConnect (Shanda Platform)',
-    subtitle: 'Enterprise-Grade Full-Stack System',
+    id: 'service-connect',
+    title: 'ServiceConnect',
+    subtitle: 'Full-Stack System (Proof of Concept)',
     images: [serviceConnect1, serviceConnect2, serviceConnect4, serviceConnect5, serviceConnect6],
     links: {
       github: 'https://github.com/Michelle-Vava/testing'
     },
     overview: 'A full-stack platform designed to support a multi-role service marketplace with complex workflows. Demonstrates deep system design, backend architecture, and testing strategy.',
     problem: 'Service marketplaces involve multiple user roles, complex workflows, state transitions, and trust requirements. Most demos oversimplify these; this project models them.',
-    outcome: 'Fully modeled multi-role system with realistic backend architecture demonstrating senior-level system thinking.',
+    outcome: 'Fully modeled multi-role system POC with realistic backend architecture demonstrating senior-level system thinking.',
     tech: ['React', 'NestJS', 'Prisma', 'PostgreSQL', 'Docker']
   },
   {
@@ -198,7 +198,7 @@ export const CASE_STUDIES = [
   },
   {
     title: "ServiceConnect",
-    subtitle: "Enterprise-Grade Full-Stack System",
+    subtitle: "Full-Stack System (Proof of Concept)",
     architecture: {
       frontend: ["React 18 + Vite", "TanStack Router & Query", "Zustand for client state", "Tailwind + shadcn/ui", "Clerk for authentication"],
       backend: ["NestJS", "Prisma ORM", "PostgreSQL", "Socket.IO for real-time updates", "Stripe for payments", "Redis for caching"],
@@ -207,7 +207,7 @@ export const CASE_STUDIES = [
     sections: [
       {
         title: "The Problem",
-        content: "Service marketplaces involve multiple user roles, complex workflows, state transitions, and trust requirements. Most demos oversimplify these constraints. This project intentionally models them including role-based access control (RBAC), real-time status updates, and secure payment flows."
+        content: "Service marketplaces involve multiple user roles, complex workflows, state transitions, and trust requirements. Most demos oversimplify these constraints. This POC intentionally models them including role-based access control (RBAC), real-time status updates, and secure payment flows."
       },
       {
         title: "Backend Architecture",

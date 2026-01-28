@@ -70,9 +70,16 @@ const CaseStudy = () => {
                           </h5>
                           <ul className="space-y-3">
                             {study.architecture.frontend.map((item, i) => (
-                              <li key={i} className="text-gray-300 text-sm flex items-start gap-2">
+                              <motion.li 
+                                key={i} 
+                                initial={{ opacity: 0, x: 10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1 + (i * 0.05) }}
+                                viewport={{ once: true }}
+                                className="text-gray-300 text-sm flex items-start gap-2"
+                              >
                                  <span className="text-primary-500 mt-1">▹</span> {item}
-                              </li>
+                              </motion.li>
                             ))}
                           </ul>
                         </div>
@@ -83,9 +90,16 @@ const CaseStudy = () => {
                           </h5>
                           <ul className="space-y-3">
                             {study.architecture.backend.map((item, i) => (
-                              <li key={i} className="text-gray-300 text-sm flex items-start gap-2">
+                              <motion.li 
+                                key={i} 
+                                initial={{ opacity: 0, x: 10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.2 + (i * 0.05) }}
+                                viewport={{ once: true }}
+                                className="text-gray-300 text-sm flex items-start gap-2"
+                              >
                                  <span className="text-primary-500 mt-1">▹</span> {item}
-                              </li>
+                              </motion.li>
                             ))}
                           </ul>
                         </div>
@@ -96,9 +110,16 @@ const CaseStudy = () => {
                           </h5>
                           <ul className="space-y-3">
                             {study.architecture.infrastructure.map((item, i) => (
-                              <li key={i} className="text-gray-300 text-sm flex items-start gap-2">
+                              <motion.li 
+                                key={i} 
+                                initial={{ opacity: 0, x: 10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.3 + (i * 0.05) }}
+                                viewport={{ once: true }}
+                                className="text-gray-300 text-sm flex items-start gap-2"
+                              >
                                  <span className="text-primary-500 mt-1">▹</span> {item}
-                              </li>
+                              </motion.li>
                             ))}
                           </ul>
                         </div>

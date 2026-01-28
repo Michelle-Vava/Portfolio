@@ -1,11 +1,20 @@
+import { lazy, Suspense } from 'react';
 import Hero from './components/Hero'
 import About from './components/About'
-import Approach from './components/Approach'
-import Projects from './components/Projects'
-import CaseStudy from './components/CaseStudy'
-import Contact from './components/Contact'
 import Navigation from './components/Navigation'
 import { PERSONAL_INFO } from './config/constants'
+
+// Lazy load heavy components below the fold
+const Approach = lazy(() => import('./components/Approach'));
+const Projects = lazy(() => import('./components/Projects'));
+const CaseStudy = lazy(() => import('./components/CaseStudy'));
+const Contact = lazy(() => import('./components/Contact'));
+
+const LoadingFallback = () => (
+  <div className="py-32 flex justify-center items-center">
+    <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 function App() {
   return (
@@ -21,25 +30,27 @@ function App() {
           <About />
         </section>
         
-        <section id="approach">
-          <Approach />
-        </section>
-        
-        <section id="projects">
-          <Projects />
-        </section>
-        
-        <section id="case-study">
-          <CaseStudy />
-        </section>
-        
-        <section id="contact">
-          <Contact 
-            githubUrl={PERSONAL_INFO.githubUrl}
-            linkedinUrl={PERSONAL_INFO.linkedinUrl}
-            email={PERSONAL_INFO.email}
-          />
-        </section>
+        <Suspense fallback={<LoadingFallback />}>
+          <section id="approach">
+            <Approach />
+          </section>
+          
+          <section id="projects">
+            <Projects />
+          </section>
+          
+          <section id="case-study">
+            <CaseStudy />
+          </section>
+          
+          <section id="contact">
+            <Contact 
+              githubUrl={PERSONAL_INFO.githubUrl}
+              linkedinUrl={PERSONAL_INFO.linkedinUrl}
+              email={PERSONAL_INFO.email}
+            />
+          </section>
+        </Suspense>
       </main>
     </div>
   )
