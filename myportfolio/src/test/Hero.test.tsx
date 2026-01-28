@@ -11,6 +11,9 @@ vi.mock('framer-motion', () => ({
     h2: ({ children, ...props }: any) => <h2 {...props}>{children}</h2>,
     p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
   },
+  useMotionValue: () => ({ set: () => {} }),
+  useTransform: () => {},
+  useSpring: () => {},
 }));
 
 describe('Hero Component', () => {
