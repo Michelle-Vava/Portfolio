@@ -1,6 +1,6 @@
 import { CASE_STUDIES } from '../config/constants';
 import { motion } from 'framer-motion';
-import { Server, Database, Layout, ShieldCheck, Cpu, GitBranch } from 'lucide-react';
+import { Server, Layout, Cpu, GitBranch } from 'lucide-react';
 
 const CaseStudy = () => {
   return (

@@ -1,8 +1,10 @@
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { Menu, X, Github } from 'lucide-react';
 
 const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -17,6 +19,17 @@ const Navigation = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isOpen]);
+
+  const navLinks = ['About', 'Approach', 'Projects', 'Contact'];
 
   return (
     <motion.nav 
@@ -33,13 +46,14 @@ const Navigation = () => {
         style={{ scaleX }}
       />
 
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        <div className="text-2xl font-bold text-white tracking-tighter cursor-pointer hover:text-primary-400 transition-colors">
+      <div className="container mx-auto px-6 flex justify-between items-center relative z-50">
+        <div className="text-2xl font-bold text-white tracking-tighter cursor-pointer hover:text-primary-400 transition-colors relative z-50">
           MV<span className="text-primary-500">.</span>
         </div>
         
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          {['About', 'Approach', 'Projects', 'Contact'].map((item) => (
+          {navLinks.map((item) => (
             <a 
               key={item} 
               href={`#${item.toLowerCase()}`} 
@@ -54,12 +68,61 @@ const Navigation = () => {
               href="https://github.com/Michelle-Vava" 
               target="_blank"
               rel="noreferrer noopener"
-              className="px-5 py-2 border border-white/20 rounded-full text-xs font-bold text-white uppercase hover:bg-white hover:text-black transition-all hover:border-transparent"
+              className="px-5 py-2 border border-white/20 rounded-full text-xs font-bold text-white uppercase hover:bg-white hover:text-black transition-all hover:border-transparent flex items-center gap-2"
             >
-              GitHub
+              <Github size={14} /> GitHub
             </a>
         </div>
+
+        {/* Mobile Toggle Button */}
+        <button 
+          className="md:hidden text-white p-2 relative z-50"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle Menu"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-0 bg-black/95 z-40 md:hidden flex flex-col items-center justify-center gap-8"
+          >
+             {navLinks.map((item, index) => (
+                <motion.a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={() => setIsOpen(false)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + (index * 0.1) }}
+                  className="text-3xl font-bold text-gray-300 hover:text-primary-500 transition-colors"
+                >
+                  {item}
+                </motion.a>
+             ))}
+             
+             <motion.a
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ delay: 0.5 }}
+               href="https://github.com/Michelle-Vava" 
+               target="_blank"
+               rel="noreferrer noopener"
+               onClick={() => setIsOpen(false)}
+               className="mt-8 px-8 py-3 border border-white/20 rounded-full text-sm font-bold text-white uppercase hover:bg-white hover:text-black transition-all flex items-center gap-2"
+             >
+                <Github size={18} /> GitHub
+             </motion.a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   )
 }

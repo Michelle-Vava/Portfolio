@@ -23,7 +23,7 @@ function App() {
       
       <main>
         <section id="hero">
-          <Hero {...PERSONAL_INFO} />
+          <Hero />
         </section>
         
         <section id="about">

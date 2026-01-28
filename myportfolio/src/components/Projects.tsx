@@ -1,6 +1,6 @@
 import { PROJECTS } from '../config/constants';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, ExternalLink, ArrowRight, X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+import { Github, ArrowRight, X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { useState, useCallback, useEffect } from 'react';
 
 const Projects = () => {
